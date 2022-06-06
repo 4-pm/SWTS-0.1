@@ -1,4 +1,3 @@
-# import the necessary packages
 from imutils.video import VideoStream
 from imutils.video import FPS
 import numpy as np
@@ -10,15 +9,12 @@ import os
 path=os.path.join(os.path.abspath(os.curdir) , 'my_model.onnx')
 args_confidence = 0.2
 # initialize the list of class labels 
-CLASSES = ["none", 'paper', 'nopaper']
+CLASSES = ['paper', 'nopaper']
+COLORS = np.random.uniform(0, 255, size=(len(CLASSES), 3))
 # load our serialized model from disk
-print("[INFO] loading model...")
 net = cv2.dnn.readNetFromONNX("C:/Users/User/Rover-Trasher/models/model.onnx")
-# initialize the video stream, allow the c
-#cammera sensor to warmup,
-# and initialize the FPS counter
-#print("[INFO] starting video stream...")
-vs = VideoStream(src=1).start()
+
+vs = VideoStream(src=0).start()
 time.sleep(2.0)
 fps = FPS().start()
 frame = vs.read()
@@ -42,34 +38,47 @@ while True:
 	net.setInput(blob)
 	detections = net.forward()
 	a = list(zip(CLASSES, detections[0]))
-    #print(a[max(a, key=lambda x: x[1])])
-	# loop over the detections
 
-		# extract the confidence (i.e., probability) associated with
-		# the prediction
 	confidence = abs(detections[0][0]-detections[0][1])
-	#print("confidence = ", confidence)
-		# filter out weak detections by ensuring the `confidence` is
-		# greater than the minimum confidence
+
 	if (confidence > args_confidence) :
 		
 		class_mark=np.argmax(detections)
-		cv2.putText(frame, CLASSES[class_mark], (30,30),cv2.FONT_HERSHEY_SIMPLEX, 0.6, (242, 230, 220), 2)
+		#cv2.putText(frame, CLASSES[class_mark], (30,30),cv2.FONT_HERSHEY_SIMPLEX, 0.6, (242, 230, 220), 2)
 
-	# show the output frame
+	for i in np.arange(0, detections.shape[1]):
+		confidence = detections[0, i]
+
+		# filter out weak detections by ensuring the `confidence` is
+		# greater than the minimum confidence
+		if confidence > 0.1:
+			# extract the index of the class label from the
+			# `detections`, then compute the (x, y)-coordinates of
+			# the bounding box for the object
+			idx = int(detections[0, i])
+			box = detections[0, i] * np.array([w, h, w, h])
+			(startX, startY, endX, endY) = box.astype("int")
+			print(startX, startY, endX, endY)
+
+			# draw the prediction on the frame
+			label = "{}: {:.2f}%".format(CLASSES[idx],
+				confidence * 100)
+			cv2.rectangle(frame, (startX, startY), (endX, endY),
+				COLORS[idx], 2)
+			y = startY - 15 if startY - 15 > 15 else startY + 15
+			cv2.putText(frame, label, (startX, y),
+				cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2)
+
+
 	cv2.imshow("Web camera view", frame)
 	key = cv2.waitKey(1) & 0xFF
 
-	# if the `q` key was pressed, break from the loop
 	if key == ord("q"):
 		break
 
-	# update the FPS counter
 	fps.update()
-	print(max(a, key=lambda x: x[1]))
+	#print(max(a, key=lambda x: x[1]))
 
-# stop the timer and display FPS information
 fps.stop()
-# do a bit of cleanup
 cv2.destroyAllWindows()
 vs.stop()
