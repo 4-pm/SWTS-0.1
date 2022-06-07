@@ -1,5 +1,4 @@
 import cv2
-import os
 from imutils.video import VideoStream
 import numpy as np
 
