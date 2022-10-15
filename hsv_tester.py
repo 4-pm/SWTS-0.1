@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from imutils.video import VideoStream
+#from imutils.video import VideoStream
 import numpy as np
 
 if __name__ == '__main__':
@@ -10,7 +10,7 @@ if __name__ == '__main__':
 cv2.namedWindow( "result" ) # создаем главное окно
 cv2.namedWindow( "settings" ) # создаем окно настроек
 
-cap = VideoStream(src=0).start()
+#cap = VideoStream(src=0).start()
 # создаем 6 бегунков для настройки начального и конечного цвета фильтра
 cv2.createTrackbar('h1', 'settings', 0, 255, nothing)
 cv2.createTrackbar('s1', 'settings', 0, 255, nothing)
@@ -21,7 +21,7 @@ cv2.createTrackbar('v2', 'settings', 255, 255, nothing)
 crange = [0,0,0, 0,0,0]
 
 while True:
-    img = cv2.imread(f"./image/3.jpg")
+    img = cv2.imread(f"./image/1.jpg")
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV )
  
     # считываем значения бегунков

@@ -1,10 +1,11 @@
 import cv2
 import numpy as np
-from imutils.video import VideoStream
+#from imutils.video import VideoStream
 
 
 def range_p(x1, y1, x2, y2):
     return ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5
+
 
 def draw_point(img, point, name):
     cv2.circle(img, point, 5, color, 2)
@@ -18,16 +19,16 @@ if __name__ == '__main__':
 
 cv2.namedWindow("result")
 
-cap = VideoStream(src=0).start()
-hsv_min = np.array((0, 158, 114), np.uint8)
-hsv_max = np.array((193, 255, 255), np.uint8)
+#cap = VideoStream(src=0).start()
+hsv_min = np.array((97, 111, 101), np.uint8)
+hsv_max = np.array((130, 179, 162), np.uint8)
 
-color = (255, 255, 255)
+color = (255, 0, 0)
 
-for i in range(1, 6):
+for num in range(1, 5):
     left, right, back = (0, 0), (0, 0), (0, 0)
     points = []
-    img = cv2.imread(f"./image/{i}.jpg")
+    img = cv2.imread(f"./image/{num}.jpg")
     #img = cv2.flip(img, 1)  # отражение кадра вдоль оси Y
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     thresh = cv2.inRange(hsv, hsv_min, hsv_max)
@@ -41,7 +42,7 @@ for i in range(1, 6):
         dM10 = moments['m10']
         dArea = moments['m00']
 
-        if 500 > dArea > 100:
+        if 500 > dArea > 90:
             x = int(dM10 / dArea)
             y = int(dM01 / dArea)
             points.append([x, y])
@@ -49,7 +50,7 @@ for i in range(1, 6):
             #cv2.putText(img, "%d-%d" % (x, y), (x + 10, y - 10),
                         #cv2.FONT_HERSHEY_SIMPLEX, 1, color_yellow, 2)
 
-    print(points)
+    print(points, "points")
 
     points2 = [[range_p(points[0][0], points[0][1], points[1][0], points[1][1]),
                 range_p(points[0][0], points[0][1], points[2][0], points[2][1])],
@@ -62,7 +63,6 @@ for i in range(1, 6):
                ]
 
     left = points[points2.index(min(points2, key=lambda _: sum(_)))]
-    print(left)
     draw_point(img, left, "Left")
     points.remove(left)
 
@@ -76,7 +76,28 @@ for i in range(1, 6):
     draw_point(img, back, "Back")
 
 
+    # для мусора
+    trash_p = 0
+    hsv_min2 = np.array((56, 35, 75), np.uint8)
+    hsv_max2 = np.array((92, 255, 217), np.uint8)
+    img2 = cv2.imread(f"./image/{num}.jpg")
+    hsv2 = cv2.cvtColor(img2, cv2.COLOR_BGR2HSV)  #Не робит тут
+    thresh2 = cv2.inRange(hsv2, hsv_min2, hsv_max2)
+    contours2, _ = cv2.findContours(thresh2.copy(), cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_L1)
 
+    moments2 = cv2.moments(contours2[0])
+
+    #moments = cv2.moments(thresh, 1)
+    dM01 = moments2['m01']
+    dM10 = moments2['m10']
+    dArea = moments2['m00']
+
+    if dArea > 100:
+        x = int(dM10 / dArea)
+        y = int(dM01 / dArea)
+        trash_p = [x, y]
+    print(trash_p, "trssh")
+    draw_point(img, [x, y], "Trash")
 
 
 
