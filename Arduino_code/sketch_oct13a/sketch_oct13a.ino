@@ -31,10 +31,12 @@ void setup() {
   mySerial.begin(38400);
   //порт для работы с модулем HC-05
   Serial.println("start prg");
-  
+
   // подключаем сервоприводы к выводам 11 и 12
   servo_right.attach(11);
+  servo_right.write(0);
   servo_left.attach(12);
+  servo_left.write(0);
   
   // настраиваем выводы платы 4, 5, 6, 7 на вывод сигналов 
   for (int i = 4; i < 8; i++) {     
@@ -135,5 +137,5 @@ void rake() {
 
 void loop() {
   rake();
-  //move_forward(200, 255, 1000);
+  move_forward(255, 255, 1000);
 }
