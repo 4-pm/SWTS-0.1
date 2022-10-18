@@ -30,7 +30,9 @@ void setup() {
   //порт принятия информации в компиляторе Arduino IDE
   mySerial.begin(38400);
   //порт для работы с модулем HC-05
-  Serial.println("start prg");
+  Serial.println("SWTS welcome you");
+  delay(500);
+  Serial.println("The machine starts working");
 
   // подключаем сервоприводы к выводам 11 и 12
   servo_right.attach(11);
@@ -136,6 +138,31 @@ void rake() {
 }
 
 void loop() {
-  rake();
-  move_forward(255, 255, 1000);
+  if (mySerial.available()){
+    char c = mySerial.read();
+    Serial.print("Using the command");    
+    if (c == "5") {
+      Serial.print("SWTS picks up the rake");
+      rake();
+    }
+    if (c == "8"){
+      Serial.print("SWTS are moving forward");
+      move_forward(255, 255, c_t);      
+    }
+    if (c == "2"){
+      Serial.print("SWTS are moving back");
+      int c_t = mySerial.read();
+      move_back(255, 255, c_t);
+    }
+    if (c == "4"){
+      Serial.print("SWTS are rotating left");
+      int c_t = mySerial.read();
+      move_left(255, 255, c_t);      
+    }
+    if (c == "6"){
+      Serial.print("SWTS are rotating right");
+      int c_t = mySerial.read();
+      move_right(255, 255, c_t);
+    }
+  }
 }
