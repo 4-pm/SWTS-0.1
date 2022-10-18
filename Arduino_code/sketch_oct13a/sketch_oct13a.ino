@@ -147,6 +147,7 @@ void loop() {
     }
     if (c == "8"){
       Serial.print("SWTS are moving forward");
+      int c_t = mySerial.read();
       move_forward(255, 255, c_t);      
     }
     if (c == "2"){
