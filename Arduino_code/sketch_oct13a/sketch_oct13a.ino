@@ -38,7 +38,7 @@ void setup() {
   servo_right.attach(11);
   servo_right.write(0);
   servo_left.attach(12);
-  servo_left.write(0);
+  servo_left.write(180);
   
   // настраиваем выводы платы 4, 5, 6, 7 на вывод сигналов 
   for (int i = 4; i < 8; i++) {     
@@ -83,8 +83,8 @@ void move_back(int speed_1, int speed_2, int timer) {
 //откредактировать названия функций по моторам
 void move_right(int speed_1, int speed_2, int timer) {
   // устанавливаем направление моторов «M1», «M2» в разные стороны
-  digitalWrite(DIR_1, HIGH);
-  digitalWrite(DIR_2, LOW);
+  digitalWrite(DIR_1, LOW);
+  digitalWrite(DIR_2, HIGH);
   // включаем моторы на максимальной скорости
   analogWrite(SPEED_1, speed_1);
   analogWrite(SPEED_2, speed_2);
@@ -100,8 +100,8 @@ void move_right(int speed_1, int speed_2, int timer) {
 
 void move_left(int speed_1, int speed_2, int timer) {
   // устанавливаем направление моторов «M1», «M2» в разные стороны
-  digitalWrite(DIR_1, LOW);
-  digitalWrite(DIR_2, HIGH);
+  digitalWrite(DIR_1, HIGH);
+  digitalWrite(DIR_2, LOW);
   // включаем моторы на максимальной скорости
   analogWrite(SPEED_1, speed_1);
   analogWrite(SPEED_2, speed_2);
