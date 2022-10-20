@@ -167,6 +167,6 @@ void loop() {
     }
   }
 
-  move_forward(220, 200, 2000);
-  delay(3000);
+  move_forward(255, 220, 2000);
+  delay(1000);
 }
