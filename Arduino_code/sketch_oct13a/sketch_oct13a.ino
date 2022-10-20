@@ -139,29 +139,29 @@ void rake() {
 void loop() {
   if (mySerial.available() > 0){
     char b_com = mySerial.read();
-    Serial.print("Using the command");
+    Serial.println("Using the command  ");
     Serial.println(b_com);    
     if (b_com == '5') {
-      Serial.print("SWTS picks up the rake");
+      Serial.println("SWTS picks up the rake");
       rake();
     }
     if (b_com == '8'){
-      Serial.print("SWTS are moving forward");
+      Serial.println("SWTS are moving forward");
       int c_t = 1000;
       move_forward(255, 255, c_t);      
     }
     if (b_com == '2'){
-      Serial.print("SWTS are moving back");
+      Serial.println("SWTS are moving back");
       int c_t = 1000;
       move_back(255, 255, c_t);
     }
     if (b_com == '4'){
-      Serial.print("SWTS are rotating left");
+      Serial.println("SWTS are rotating left");
       int c_t = 1000;
       move_left(255, 255, c_t);      
     }
     if (b_com == '6'){
-      Serial.print("SWTS are rotating right");
+      Serial.println("SWTS are rotating right");
       int c_t = 1000;
       move_right(255, 255, c_t);
     }
