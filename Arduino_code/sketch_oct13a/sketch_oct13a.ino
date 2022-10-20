@@ -18,7 +18,6 @@ Servo servo_right;
 Servo servo_left;
 
 int pos = 0;
-int buf_size = 1;
 
 String command;
 
@@ -81,7 +80,6 @@ void move_back(int speed_1, int speed_2, int timer) {
   delay(1000);
 }
 
-//откредактировать названия функций по моторам
 void move_right(int speed_1, int speed_2, int timer) {
   // устанавливаем направление моторов «M1», «M2» в разные стороны
   digitalWrite(DIR_1, LOW);
@@ -139,33 +137,30 @@ void rake() {
 }
 
 void loop() {
-  if (buf_size != 0) {
-    int buf_size = mySerial.available();
-  }
-  if (buf_size > 0){
+  if (mySerial.available() > 0){
+    char b_com = mySerial.read();
     Serial.print("Using the command");
-    Serial.println(buf_size);    
-    if (buf_size == 5) {
-      int buf_size = 0;
+    Serial.println(b_com);    
+    if (b_com == '5') {
       Serial.print("SWTS picks up the rake");
       rake();
     }
-    if (buf_size == 8){
+    if (b_com == '8'){
       Serial.print("SWTS are moving forward");
       int c_t = 1000;
       move_forward(255, 255, c_t);      
     }
-    if (buf_size == 2){
+    if (b_com == '2'){
       Serial.print("SWTS are moving back");
       int c_t = 1000;
       move_back(255, 255, c_t);
     }
-    if (buf_size == 4){
+    if (b_com == '4'){
       Serial.print("SWTS are rotating left");
       int c_t = 1000;
       move_left(255, 255, c_t);      
     }
-    if (buf_size == 6){
+    if (b_com == '6'){
       Serial.print("SWTS are rotating right");
       int c_t = 1000;
       move_right(255, 255, c_t);
