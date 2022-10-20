@@ -14,9 +14,12 @@ while True:
     if T:
         if start_tresh(img):
             while True:
-                center, front, trash = points_returner(img)
-                v_bot = np.array([front[0] - center[0], front[1] - center[1]])
-                v_trash = np.array([trash[0] - center[0], trash[1] - center[1]])
+                try:
+                    center, front, trash = points_returner(img)
+                    v_bot = np.array([front[0] - center[0], front[1] - center[1]])
+                    v_trash = np.array([trash[0] - center[0], trash[1] - center[1]])
+                except:
+                    break
                 angle = angle_returner(v_bot, v_trash)
                 angle_time = 5 #!!!!!!!!!!! формула времени
                 s = serial.Serial(port='COM9', baudrate=9600, timeout=angle_time + 1)
@@ -25,7 +28,10 @@ while True:
                 else:
                     s.write(b'4')
                 s.close()
-                center, front, trash = points_returner(img)
+                try:
+                    center, front, trash = points_returner(img)
+                except:
+                    break
                 if range_p(center[0], center[1], front[0], front[1]) * 2 // range_p(front[0], front[1], trash[0], trash[1]) < 2:
                     s = serial.Serial(port='COM9', baudrate=9600, timeout=angle_time + 1)
                     s.write(b'8')
