@@ -19,8 +19,6 @@ Servo servo_left;
 
 int pos = 0;
 
-String command;
-
 void setup() {
   pinMode(2,INPUT);
   //порт для чтения информации с bluetooth модуля
@@ -140,31 +138,31 @@ void loop() {
   if (mySerial.available() > 0){
     char b_com = mySerial.read();
     Serial.println("Using the command  ");
-    Serial.println(b_com);    
+    Serial.println(b_com); //вывод значения с bluetooth
     if (b_com == '5') {
       Serial.println("SWTS picks up the rake");
-      rake();
+      rake(); //подъём грабель
     }
     if (b_com == '8'){
       Serial.println("SWTS are moving forward");
-      int c_t = 1000;
-      move_forward(255, 220, c_t);      
+      int c_t = 1000; //время движения
+      move_forward(255, 220, c_t); //параметры: скорость мотора 1, скорость мотра 2, время движения
     }
     if (b_com == '2'){
       Serial.println("SWTS are moving back");
-      int c_t = 1000;
-      move_back(255, 220, c_t);
+      int c_t = 1000; //время движения
+      move_back(255, 220, c_t); //параметры: скорость мотора 1, скорость мотра 2, время движения
     }
     if (b_com == '4'){
       Serial.println("SWTS are rotating left");
-      int c_t = 1000;
-      move_left(255, 220, c_t);      
+      int c_t = 1000; //время движения
+      move_left(255, 220, c_t); //параметры: скорость мотора 1, скорость мотра 2, время движения  
     }
     if (b_com == '6'){
       Serial.println("SWTS are rotating right");
-      int c_t = 1000;
-      move_right(255, 220, c_t);
+      int c_t = 1000; //время движения
+      move_right(255, 220, c_t); //параметры: скорость мотора 1, скорость мотра 2, время движения
     }
   }
-  delay(1000);
+  delay(1000); //задержка 1 секунда
 }
