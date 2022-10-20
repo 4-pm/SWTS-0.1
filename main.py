@@ -10,8 +10,8 @@ cap = cv2.VideoCapture(0)
 
 while True:
     T, img = cap.read()
+    img2 = img[:]
     if T:
-        cv2.imshow('main', img) 
         if start_tresh(img):
             while True:
                 center, front, trash = points_returner(img)
@@ -37,6 +37,10 @@ while True:
                     s = serial.Serial(port='COM9', baudrate=9600, timeout=angle_time + 1)
                     s.write(b'8')
                     s.close()
+                draw_point(img2, center, "Center")
+                draw_point(img2, front, "Front")
+                draw_point(img2, trash, "Trash")
+        cv2.imshow('main', img2) 
         time.sleep(1)
             
     if cv2.waitKey(1) == ord('q'):
