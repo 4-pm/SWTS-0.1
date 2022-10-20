@@ -28,7 +28,7 @@ void setup() {
   //порт для отправки информации с bluetooth модуля
   Serial.begin(9600);
   //порт принятия информации в компиляторе Arduino IDE
-  mySerial.begin(38400);
+  mySerial.begin(9600);
   //порт для работы с модулем HC-05
   Serial.println("SWTS welcome you");
   delay(500);
@@ -138,32 +138,35 @@ void rake() {
 }
 
 void loop() {
-  if (mySerial.available()){
-    char c = mySerial.read();
-    Serial.print("Using the command");    
-    if (c == "5") {
+  
+  int buf_size = mySerial.available();
+  if (buf_size > 0){
+    Serial.print("Using the command");
+    Serial.println(buf_size);    
+    if (buf_size == 5) {
       Serial.print("SWTS picks up the rake");
       rake();
     }
-    if (c == "8"){
+    if (buf_size == 8){
       Serial.print("SWTS are moving forward");
-      int c_t = mySerial.read();
+      int c_t = 1000;
       move_forward(255, 255, c_t);      
     }
-    if (c == "2"){
+    if (buf_size == 2){
       Serial.print("SWTS are moving back");
-      int c_t = mySerial.read();
+      int c_t = 1000;
       move_back(255, 255, c_t);
     }
-    if (c == "4"){
+    if (buf_size == 4){
       Serial.print("SWTS are rotating left");
-      int c_t = mySerial.read();
+      int c_t = 1000;
       move_left(255, 255, c_t);      
     }
-    if (c == "6"){
+    if (buf_size == 6){
       Serial.print("SWTS are rotating right");
-      int c_t = mySerial.read();
+      int c_t = 1000;
       move_right(255, 255, c_t);
     }
   }
+  delay(3000);
 }
