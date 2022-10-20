@@ -18,6 +18,7 @@ Servo servo_right;
 Servo servo_left;
 
 int pos = 0;
+int buf_size = 1;
 
 String command;
 
@@ -138,12 +139,14 @@ void rake() {
 }
 
 void loop() {
-  
-  int buf_size = mySerial.available();
+  if (buf_size != 0) {
+    int buf_size = mySerial.available();
+  }
   if (buf_size > 0){
     Serial.print("Using the command");
     Serial.println(buf_size);    
     if (buf_size == 5) {
+      int buf_size = 0;
       Serial.print("SWTS picks up the rake");
       rake();
     }
