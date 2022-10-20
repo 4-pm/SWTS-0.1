@@ -28,7 +28,7 @@ void setup() {
   //порт для отправки информации с bluetooth модуля
   Serial.begin(9600);
   //порт принятия информации в компиляторе Arduino IDE
-  mySerial.begin(38400);
+  mySerial.begin(9600);
   //порт для работы с модулем HC-05
   Serial.println("SWTS welcome you");
   delay(500);
@@ -80,7 +80,6 @@ void move_back(int speed_1, int speed_2, int timer) {
   delay(1000);
 }
 
-//откредактировать названия функций по моторам
 void move_right(int speed_1, int speed_2, int timer) {
   // устанавливаем направление моторов «M1», «M2» в разные стороны
   digitalWrite(DIR_1, LOW);
@@ -138,32 +137,34 @@ void rake() {
 }
 
 void loop() {
-  if (mySerial.available()){
-    char c = mySerial.read();
-    Serial.print("Using the command");    
-    if (c == "5") {
-      Serial.print("SWTS picks up the rake");
+  if (mySerial.available() > 0){
+    char b_com = mySerial.read();
+    Serial.println("Using the command  ");
+    Serial.println(b_com);    
+    if (b_com == '5') {
+      Serial.println("SWTS picks up the rake");
       rake();
     }
-    if (c == "8"){
-      Serial.print("SWTS are moving forward");
-      int c_t = mySerial.read();
-      move_forward(255, 255, c_t);      
+    if (b_com == '8'){
+      Serial.println("SWTS are moving forward");
+      int c_t = 1000;
+      move_forward(255, 220, c_t);      
     }
-    if (c == "2"){
-      Serial.print("SWTS are moving back");
-      int c_t = mySerial.read();
-      move_back(255, 255, c_t);
+    if (b_com == '2'){
+      Serial.println("SWTS are moving back");
+      int c_t = 1000;
+      move_back(255, 220, c_t);
     }
-    if (c == "4"){
-      Serial.print("SWTS are rotating left");
-      int c_t = mySerial.read();
-      move_left(255, 255, c_t);      
+    if (b_com == '4'){
+      Serial.println("SWTS are rotating left");
+      int c_t = 1000;
+      move_left(255, 220, c_t);      
     }
-    if (c == "6"){
-      Serial.print("SWTS are rotating right");
-      int c_t = mySerial.read();
-      move_right(255, 255, c_t);
+    if (b_com == '6'){
+      Serial.println("SWTS are rotating right");
+      int c_t = 1000;
+      move_right(255, 220, c_t);
     }
   }
+  delay(1000);
 }
