@@ -21,7 +21,7 @@ cv2.createTrackbar('v2', 'settings', 255, 255, nothing)
 crange = [0,0,0, 0,0,0]
 
 while True:
-    img = cv2.imread(f"./image/1.jpg")
+    img = cv2.imread(f"./image/7.jpg")
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV )
  
     # считываем значения бегунков
@@ -39,11 +39,16 @@ while True:
     # накладываем фильтр на кадр в модели HSV
     thresh = cv2.inRange(hsv, h_min, h_max)
 
-    cv2.imshow('result', thresh) 
+    cv2.namedWindow("main", cv2.WINDOW_NORMAL)
+    cv2.resizeWindow('main', 600, 600) 
+    cv2.imshow('main', thresh) 
+    #cv2.imshow('pre', hsv) 
+    
+    #cv2.resizeWindow('pre', 400, 400)
  
     ch = cv2.waitKey(5)
     if ch == 27:
         break
 
-cap.release()
+#cap.release()
 cv2.destroyAllWindows()
