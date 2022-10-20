@@ -6,20 +6,38 @@ import time
 from functions import *
 
 
-# блютуз
-#s = serial.Serial(port='COM9', baudrate=9600, timeout=10)
-#s.write(b'5')
-#s.close()
-
 cap = cv2.VideoCapture(0)
 
 while True:
-    frame = cap.read()
-    # if frame is read correctly ret is True
-    # Our operations on the frame come here
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    # Display the resulting frame
-    cv2.imshow('frame', gray)
-    time.sleep(1)
+    T, img = cap.read()
+    if T:
+        cv2.imshow('main', img) 
+        if start_tresh(img):
+            while True:
+                center, front, trash = points_returner(img)
+                v_bot = np.array([front[0] - center[0], front[1] - center[1]])
+                v_trash = np.array([trash[0] - center[0], trash[1] - center[1]])
+                angle = angle_returner(v_bot, v_trash)
+                angle_time = 5 #!!!!!!!!!!! формула времени
+                s = serial.Serial(port='COM9', baudrate=9600, timeout=angle_time + 1)
+                if angle > 0:
+                    s.write(b'6')
+                else:
+                    s.write(b'4')
+                s.close()
+                center, front, trash = points_returner(img)
+                if range_p(center[0], center[1], front[0], front[1]) * 2 // range_p(front[0], front[1], trash[0], trash[1]) < 2:
+                    s = serial.Serial(port='COM9', baudrate=9600, timeout=angle_time + 1)
+                    s.write(b'8')
+                    s.write(b'5')
+                    s.close()
+                    time.sleep(10)
+                    break
+                else:
+                    s = serial.Serial(port='COM9', baudrate=9600, timeout=angle_time + 1)
+                    s.write(b'8')
+                    s.close()
+        time.sleep(1)
+            
     if cv2.waitKey(1) == ord('q'):
         break

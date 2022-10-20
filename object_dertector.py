@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from math import degrees
+from math import degrees, atan2
 #from imutils.video import VideoStream
 
 
@@ -39,7 +39,6 @@ def points_returner(img):
             # cv2.putText(img, "%d-%d" % (x, y), (x + 10, y - 10),
             # cv2.FONT_HERSHEY_SIMPLEX, 1, color_yellow, 2)
 
-    print(points, "points")
 
     points2 = [[range_p(points[0][0], points[0][1], points[1][0], points[1][1]),
                 range_p(points[0][0], points[0][1], points[2][0], points[2][1])],
@@ -98,13 +97,9 @@ def points_returner(img):
     return center, front, trash_p
 
 def angle_returner(v_bot, v_trash):
-    v_bot = unit_vector(v_bot)
-    v_trash = unit_vector(v_trash)
-    return degrees(np.arccos(np.clip(np.dot(v_bot, v_trash), -1.0, 1.0)))
-
-if __name__ == '__main__':
-    def callback(*arg):
-        print(arg)
+    #v_bot = unit_vector(v_bot)
+    #v_trash = unit_vector(v_trash)
+    return round(degrees(atan2(v_trash[1], v_trash[0]) - atan2(v_bot[1], v_bot[0])))
 
 
 cv2.namedWindow("result")
