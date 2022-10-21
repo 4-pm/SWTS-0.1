@@ -21,12 +21,14 @@ while True:
                 except:
                     break
                 angle = angle_returner(v_bot, v_trash)
-                angle_time = 5 #!!!!!!!!!!! формула времени
+                angle_time = str(7 * angle)
                 s = serial.Serial(port='COM8', baudrate=9600, timeout=1)
                 if angle > 0:
                     s.write(b'6')
+                    s.write(bytes(angle_time))
                 else:
                     s.write(b'4')
+                    s.write(bytes(angle_time))
                 s.close()
                 try:
                     center, front, trash = points_returner(img)
