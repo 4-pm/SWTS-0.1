@@ -17,8 +17,8 @@ def draw_point(img, point, name):  # рисование на фото
 
 def points_returner(img):
     points = []
-    hsv_min = np.array((92, 59, 142), np.uint8)
-    hsv_max = np.array((127, 187, 221), np.uint8)
+    hsv_min = np.array((95, 145, 121), np.uint8)
+    hsv_max = np.array((135, 238, 249), np.uint8)
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     thresh = cv2.inRange(hsv, hsv_min, hsv_max)
     contours, _ = cv2.findContours(thresh.copy(), cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_L1)
@@ -69,8 +69,8 @@ def points_returner(img):
 
     # для мусора
     trash_p = 0
-    hsv_min2 = np.array((59, 150, 106), np.uint8)
-    hsv_max2 = np.array((102, 255, 174), np.uint8)
+    hsv_min2 = np.array((68, 255, 92), np.uint8)
+    hsv_max2 = np.array((125, 255, 172), np.uint8)
     img2 = img
     hsv2 = cv2.cvtColor(img2, cv2.COLOR_BGR2HSV)
     thresh2 = cv2.inRange(hsv2, hsv_min2, hsv_max2)
