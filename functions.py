@@ -3,6 +3,9 @@ import numpy as np
 from math import degrees, atan2
 
 
+def unit_vector(vector):
+    return vector / np.linalg.norm(vector)
+
 def range_p(x1, y1, x2, y2):  # расстояние между точками
     return ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5
 
@@ -17,8 +20,8 @@ def draw_point(img, point, name):  # рисование на фото
 
 def points_returner(img):
     points = []
-    hsv_min = np.array((104, 61, 57), np.uint8)
-    hsv_max = np.array((113, 220, 235), np.uint8)
+    hsv_min = np.array((82, 137, 54), np.uint8)
+    hsv_max = np.array((123, 255, 255), np.uint8)
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     thresh = cv2.inRange(hsv, hsv_min, hsv_max)
     contours, _ = cv2.findContours(thresh.copy(), cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_L1)
@@ -31,7 +34,7 @@ def points_returner(img):
         dM10 = moments['m10']
         dArea = moments['m00']
 
-        if 1000 > dArea > 50:
+        if dArea > 50:
             x = int(dM10 / dArea)
             y = int(dM01 / dArea)
             points.append([x, y])
@@ -69,8 +72,8 @@ def points_returner(img):
 
     # для мусора
     trash_p = 0
-    hsv_min2 = np.array((66, 137, 114), np.uint8)
-    hsv_max2 = np.array((85, 255, 192), np.uint8)
+    hsv_min2 = np.array((0, 226, 62), np.uint8)
+    hsv_max2 = np.array((82, 255, 105), np.uint8)
     img2 = img
     hsv2 = cv2.cvtColor(img2, cv2.COLOR_BGR2HSV)
     thresh2 = cv2.inRange(hsv2, hsv_min2, hsv_max2)
@@ -95,14 +98,17 @@ def points_returner(img):
             dArea_n = dArea
     draw_point(img, trash_p, "Trash")
 
+    print(center, front, trash_p, "POINTS-----")
     return center, front, trash_p
 
 def angle_returner(v_bot, v_trash):
-    return round(degrees(atan2(v_trash[1], v_trash[0]) - atan2(v_bot[1], v_bot[0])))
+    v_bot = unit_vector(v_bot)
+    v_trash = unit_vector(v_trash)
+    return np.arccos(np.clip(np.dot(v_bot, v_trash), -1.0, 1.0))
 
 def start_tresh(img):
-    hsv_min2 = np.array((66, 137, 114), np.uint8)
-    hsv_max2 = np.array((85, 255, 192), np.uint8)
+    hsv_min2 = np.array((0, 226, 62), np.uint8)
+    hsv_max2 = np.array((82, 255, 105), np.uint8)
     hsv2 = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     thresh2 = cv2.inRange(hsv2, hsv_min2, hsv_max2)
 
