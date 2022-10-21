@@ -119,6 +119,7 @@ for num in range(1, 9):
     cv2.line(img, center, front, (0, 0, 255), 2)
     cv2.line(img, center, trash, (0, 0, 255), 2)
 
+
     v_bot = np.array([front[0] - center[0], front[1] - center[1]])
     v_trash = np.array([trash[0] - center[0], trash[1] - center[1]])
     print(angle_returner(v_bot, v_trash))

@@ -154,7 +154,7 @@ void rake() {
   delay(1000);
 }
 
-void loop() {
+void loop() {  
   if (mySerial.available() > 0){
     char b_com = mySerial.read();
     Serial.println("Using the command  ");
@@ -177,15 +177,31 @@ void loop() {
     }
     if (b_com == '4'){
       Serial.println("SWTS are rotating left");
-      int c_t = mySerial.read(); //время движения
+      int c_t1 = mySerial.read() - 48; //время движения
+      int c_t2 = mySerial.read() - 48; //время движения
+      int c_t3 = mySerial.read() - 48; //время движения
+      int c_t4 = mySerial.read() - 48; //время движения
+      Serial.println(c_t1);
+      Serial.println(c_t2);
+      Serial.println(c_t3);
+      int c_t = c_t1 * 1000 + c_t2 * 100 + c_t3 * 10 + c_t4;
+      Serial.println(c_t);
       int c_t_2 = 50; //дополнительное время движения мотора 1
-      move_left(255, 220, c_t, c_t_2); //параметры: скорость мотора 1, скорость мотора 2, время движения, дополнительное время движения мотора 1
+      move_left(255, 255, c_t, c_t_2); //параметры: скорость мотора 1, скорость мотора 2, время движения, дополнительное время движения мотора 1
     }
     if (b_com == '6'){
       Serial.println("SWTS are rotating right");
-      int c_t = mySerial.read(); //время движения
+      int c_t1 = mySerial.read() - 48; //время движения
+      int c_t2 = mySerial.read() - 48; //время движения
+      int c_t3 = mySerial.read() - 48; //время движения
+      int c_t4 = mySerial.read() - 48; //время движения
+      Serial.println(c_t1);
+      Serial.println(c_t2);
+      Serial.println(c_t3);
+      int c_t = c_t1 * 1000 + c_t2 * 100 + c_t3 * 10 + c_t4;
+      Serial.println(c_t);
       int c_t_2 = 50; //дополнительное время движения мотора 1
-      move_right(255, 220, c_t, c_t_2); //параметры: скорость мотора 1, скорость мотора 2, время движения, дополнительное время движения мотора 1
+      move_right(255, 255, c_t, c_t_2); //параметры: скорость мотора 1, скорость мотора 2, время движения, дополнительное время движения мотора 1
     }
   }
   delay(1000); //задержка 1 секунда
