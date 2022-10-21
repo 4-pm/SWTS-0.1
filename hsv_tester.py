@@ -3,7 +3,7 @@ import numpy as np
 #from imutils.video import VideoStream
 import numpy as np
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 if __name__ == '__main__':
     def nothing(*arg):
