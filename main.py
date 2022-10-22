@@ -7,7 +7,7 @@ from functions import *
 
 
 cap = cv2.VideoCapture(1)
-s = serial.Serial(port='COM9', baudrate=9600, timeout=500)
+s = serial.Serial(port='COM9', baudrate=9600, timeout=0)
 while True:
         T, img = cap.read()
         img2 = img[:]
@@ -28,7 +28,7 @@ while True:
                     break
 
                 angle = angle_returner(v_bot, v_trash)
-                angle_time = str(2 * abs(angle))
+                angle_time = str(round(10 * angle))
                 if len(angle_time) < 4:
                     angle_time = ("0" * (4 - len(angle_time))) + angle_time
                 print(angle_time, angle)
