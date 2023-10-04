@@ -14,14 +14,18 @@ def range_p(x1, y1, x2, y2):  # расстояние между точками
     #return vector / np.linalg.norm(vector)
 
 def draw_point(img, point, name):  # рисование на фото
-    cv2.circle(img, point, 5, (255, 0, 0), 2)
+    cv2.circle(img, point, 5, (0, 0, 255), 2)
     cv2.putText(img, name, (point[0] + 10, point[1] - 10),
-                cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
+                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+
+def draw_angle(img, point, name):
+    cv2.putText(img, name, (2000, 2000),
+                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
 
 def points_returner(img):
     points = []
-    hsv_min = np.array((101, 118, 54), np.uint8)
-    hsv_max = np.array((130, 255, 182), np.uint8)
+    hsv_min = np.array((97, 101, 68), np.uint8)
+    hsv_max = np.array((127, 182, 130), np.uint8)
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     thresh = cv2.inRange(hsv, hsv_min, hsv_max)
     contours, _ = cv2.findContours(thresh.copy(), cv2.RETR_CCOMP, cv2.CHAIN_APPROX_TC89_L1)

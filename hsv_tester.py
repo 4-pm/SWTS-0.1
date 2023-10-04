@@ -23,8 +23,9 @@ cv2.createTrackbar('v2', 'settings', 255, 255, nothing)
 crange = [0,0,0, 0,0,0]
 
 while True:
-    #img = cv2.imread(f"./image/7.jpg")
-    T, img = cap.read()
+    img = cv2.imread(f"./image/1.jpg")
+    T = True
+    #T, img = cap.read()
     if T:
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV )
      
